@@ -12,6 +12,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.financeapp.data.model.TransactionType
 import com.example.financeapp.ui.theme.FinanceAppTheme
+import com.example.financeapp.ui.transaction.preview.PreviewTransactionViewModel
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,7 +68,11 @@ fun TransactionForm(modifier: Modifier = Modifier, viewModel: TransactionViewMod
                 onValueChange = {},
                 label = { Text("Transaction type") },
                 readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+                modifier = Modifier
+                    .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                    .fillMaxWidth()
             )
 
             ExposedDropdownMenu(
@@ -114,11 +120,11 @@ fun TransactionForm(modifier: Modifier = Modifier, viewModel: TransactionViewMod
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun TransactionFormPreview() {
-//    FinanceAppTheme()
-//    {
-//        TransactionForm()
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+fun TransactionFormPreview() {
+    FinanceAppTheme()
+    {
+        TransactionForm(viewModel = PreviewTransactionViewModel())
+    }
+}

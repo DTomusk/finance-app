@@ -4,14 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.financeapp.data.local.entity.TransactionEntity
 import com.example.financeapp.data.model.TransactionType
-import com.example.financeapp.data.repository.TransactionRepository
+import com.example.financeapp.data.repository.ITransactionRepository
 import kotlinx.coroutines.launch
 
-class TransactionViewModel(
-    private val repo: TransactionRepository
+open class TransactionViewModel(
+    private val repo: ITransactionRepository
 ) : ViewModel() {
 
-    fun addTransaction(amount: Double, type: TransactionType, description: String?) {
+    open fun addTransaction(amount: Double, type: TransactionType, description: String?) {
         viewModelScope.launch {
             repo.addTransaction(
                 TransactionEntity(
