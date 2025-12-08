@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -19,12 +23,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.financeapp.data.model.TransactionType
 import com.example.financeapp.ui.theme.FinanceAppTheme
 
 @Composable
-fun TransactionForm(modifier: Modifier = Modifier) {
+@OptIn(ExperimentalMaterial3Api::class)
+fun TransactionForm(modifier: Modifier = Modifier, viewModel: TransactionViewModel) {
     var amount by remember { mutableStateOf("") }
+    var selectedType by remember { mutableStateOf(TransactionType.TREATS)}
     var submittedTransaction by remember { mutableStateOf("") }
+    var expanded by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -41,18 +49,51 @@ fun TransactionForm(modifier: Modifier = Modifier) {
             value = amount,
             onValueChange = { amount = it },
             label = { Text("Amount (£)") },
+            placeholder = { Text("Enter amount in GBP")},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded }
+        ) {
+            OutlinedTextField(
+                value = selectedType.name,
+                onValueChange = {},
+                label = { Text("Transaction type") },
+                readOnly = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                TransactionType.entries.forEach { type ->
+                    DropdownMenuItem(
+                        text = { Text(type.name) },
+                        onClick = {
+                            selectedType = type
+                            expanded = false
+                        }
+                    )
+
+                }
+            }
+        }
+
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
             onClick = {
-                if (amount.isNotBlank()) {
-                    submittedTransaction = "Submitted £$amount"
-                    amount = "" // optional: clear field
+                val amountDouble = amount.toDoubleOrNull()
+                if (amountDouble != null) {
+                    viewModel.addTransaction(amountDouble, TransactionType.TRANSPORT, "blah blah blah")
+                    submittedTransaction = "Submitted £$amountDouble as ${selectedType.name}"
                 } else {
                     submittedTransaction = "Please enter a valid amount"
                 }
@@ -73,11 +114,11 @@ fun TransactionForm(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun TransactionFormPreview() {
-    FinanceAppTheme()
-    {
-        TransactionForm()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun TransactionFormPreview() {
+//    FinanceAppTheme()
+//    {
+//        TransactionForm()
+//    }
+//}
