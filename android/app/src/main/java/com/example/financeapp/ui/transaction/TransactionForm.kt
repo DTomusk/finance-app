@@ -35,6 +35,7 @@ fun TransactionForm(modifier: Modifier = Modifier, viewModel: TransactionViewMod
     var selectedType by remember { mutableStateOf(TransactionType.TREATS)}
     var submittedTransaction by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
+    var description by remember { mutableStateOf( "" ) }
 
     Column(
         modifier = modifier
@@ -49,7 +50,12 @@ fun TransactionForm(modifier: Modifier = Modifier, viewModel: TransactionViewMod
 
         OutlinedTextField(
             value = amount,
-            onValueChange = { amount = it },
+            onValueChange = { newValue ->
+                val cleaned = newValue.replace(",", ".")
+                if (cleaned.matches(Regex("""\d*\.?\d{0,2}"""))) {
+                    amount = cleaned
+                }
+            },
             label = { Text("Amount (£)") },
             placeholder = { Text("Enter amount in GBP")},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -94,12 +100,24 @@ fun TransactionForm(modifier: Modifier = Modifier, viewModel: TransactionViewMod
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        OutlinedTextField(
+            value = description,
+            onValueChange = { description = it },
+            label = { Text("Description (optional)") },
+            placeholder = { Text("Optionally enter a description of the purchase")},
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
         Button(
             onClick = {
                 val amountDouble = amount.toDoubleOrNull()
                 if (amountDouble != null) {
-                    viewModel.addTransaction(amountDouble, TransactionType.TRANSPORT, "blah blah blah")
-                    submittedTransaction = "Submitted £$amountDouble as ${selectedType.name}"
+                    viewModel.addTransaction(amountDouble, TransactionType.TRANSPORT, description)
+                    submittedTransaction = "Submitted £$amountDouble as ${selectedType.name} with description $description."
                 } else {
                     submittedTransaction = "Please enter a valid amount"
                 }
