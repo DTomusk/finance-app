@@ -23,4 +23,6 @@ open class TransactionViewModel(
             )
         }
     }
+
+    val transactions = repo.listTransactions()
 }

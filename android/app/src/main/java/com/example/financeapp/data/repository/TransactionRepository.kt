@@ -9,5 +9,5 @@ class TransactionRepository(
     private val dao: TransactionDao
 ) : ITransactionRepository {
     override suspend fun addTransaction(t: TransactionEntity) = dao.insert(t)
-    override suspend fun listTransactions() = dao.getAll()
+    override fun listTransactions() = dao.getAll()
 }
