@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.financeapp.data.model.TransactionType
 import com.example.financeapp.ui.theme.FinanceAppTheme
-import com.example.financeapp.ui.transaction.preview.PreviewTransactionViewModel
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -116,7 +115,7 @@ fun TransactionForm(modifier: Modifier = Modifier, viewModel: TransactionViewMod
             onClick = {
                 val amountDouble = amount.toDoubleOrNull()
                 if (amountDouble != null) {
-                    viewModel.addTransaction(amountDouble, TransactionType.TRANSPORT, description)
+                    viewModel.addTransaction(amountDouble, selectedType, description)
                     submittedTransaction = "Submitted £$amountDouble as ${selectedType.name} with description $description."
                 } else {
                     submittedTransaction = "Please enter a valid amount"
@@ -135,14 +134,5 @@ fun TransactionForm(modifier: Modifier = Modifier, viewModel: TransactionViewMod
                 style = MaterialTheme.typography.bodyLarge
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TransactionFormPreview() {
-    FinanceAppTheme()
-    {
-        TransactionForm(viewModel = PreviewTransactionViewModel())
     }
 }
