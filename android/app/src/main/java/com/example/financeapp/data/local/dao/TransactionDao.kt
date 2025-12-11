@@ -13,4 +13,10 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions")
     fun getAll(): Flow<List<TransactionEntity>>
+
+    @Query(value = "SELECT SUM(amount) FROM transactions WHERE createdAt >= :startOfMonth AND createdAt <= :startOfNextMonth")
+    fun getTotalForMonth(
+        startOfMonth: Long,
+        startOfNextMonth: Long
+    ): Flow<Double?>
 }

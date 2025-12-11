@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface ITransactionRepository {
     suspend fun addTransaction(t: TransactionEntity)
     fun listTransactions(): Flow<List<TransactionEntity>>
+
+    fun getCurrentMonthTotal(): Flow<Double>
 }
