@@ -11,7 +11,7 @@ interface TransactionDao {
     @Insert
     suspend fun insert(transaction: TransactionEntity)
 
-    @Query("SELECT * FROM transactions")
+    @Query("SELECT * FROM transactions ORDER BY createdAt DESC")
     fun getAll(): Flow<List<TransactionEntity>>
 
     @Query(value = "SELECT SUM(amount) FROM transactions WHERE createdAt >= :startOfMonth AND createdAt <= :startOfNextMonth")
