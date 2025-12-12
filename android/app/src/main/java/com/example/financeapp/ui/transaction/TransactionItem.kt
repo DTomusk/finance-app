@@ -26,9 +26,9 @@ fun TransactionItem(
 ) {
     Card(
         modifier = modifier
-            .padding(vertical = 8.dp)
+            .padding(vertical = 2.dp)
             .fillMaxWidth(),
-        shape = RoundedCornerShape(32.dp)
+        shape = RoundedCornerShape(8.dp)
     ) {
         Column(
             modifier = Modifier
