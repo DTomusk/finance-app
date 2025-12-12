@@ -19,11 +19,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.compose.FinanceAppTheme
 import com.example.financeapp.data.local.AppDatabase
 import com.example.financeapp.data.repository.TransactionRepository
 import com.example.financeapp.ui.navigation.BottomNavItem
 import com.example.financeapp.ui.navigation.bottomNavItems
-import com.example.financeapp.ui.theme.FinanceAppTheme
 import com.example.financeapp.ui.transaction.TransactionForm
 import com.example.financeapp.ui.transaction.TransactionList
 import com.example.financeapp.ui.transaction.TransactionViewModel
