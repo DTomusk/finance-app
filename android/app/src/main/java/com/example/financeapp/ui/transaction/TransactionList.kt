@@ -37,7 +37,7 @@ fun TransactionList(
             Spacer(Modifier.height(8.dp))
 
             Text(
-                text = "£${String.format("%.2f", monthSpent)}",
+                text = monthSpent?.let { "£${String.format("%.2f", monthSpent)}" } ?: "Loading...",
                 style = MaterialTheme.typography.titleLarge,
                 fontSize = MaterialTheme.typography.titleLarge.fontSize * 1.5f
             )

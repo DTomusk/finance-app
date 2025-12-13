@@ -6,6 +6,7 @@ import com.example.financeapp.data.local.entity.TransactionEntity
 import com.example.financeapp.data.model.TransactionType
 import com.example.financeapp.data.repository.ITransactionRepository
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -29,5 +30,5 @@ open class TransactionViewModel(
     val transactions = repo.listTransactions()
 
     val monthTotal = repo.getCurrentMonthTotal()
-        .stateIn(viewModelScope, SharingStarted.Lazily, 0.0)
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
 }

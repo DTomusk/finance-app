@@ -1,31 +1,15 @@
 package com.example.financeapp
 
+import FinanceApp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.compose.FinanceAppTheme
 import com.example.financeapp.data.local.AppDatabase
 import com.example.financeapp.data.repository.TransactionRepository
-import com.example.financeapp.ui.navigation.BottomNavItem
-import com.example.financeapp.ui.navigation.bottomNavItems
-import com.example.financeapp.ui.transaction.TransactionForm
-import com.example.financeapp.ui.transaction.TransactionList
 import com.example.financeapp.ui.transaction.TransactionViewModel
 import com.example.financeapp.ui.transaction.TransactionViewModelFactory
 
@@ -45,61 +29,8 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            val snackbarHostState = remember { SnackbarHostState() } // <-- here, inside Composable
             FinanceAppTheme {
-
-                val navController = rememberNavController()
-
-                Scaffold(
-                    topBar = {
-                        TopAppBar(title = { Text("Dave's money") })
-                    },
-                    bottomBar = {
-                        NavigationBar {
-                            val currentRoute = navController.currentBackStackEntry
-                                ?.destination?.route
-
-                            bottomNavItems.forEach { item ->
-                                NavigationBarItem(
-                                    selected = currentRoute == item.route,
-                                    onClick = {
-                                        navController.navigate(item.route) {
-                                            popUpTo(navController.graph.startDestinationId) {
-                                                saveState = true
-                                            }
-                                            launchSingleTop = true
-                                            restoreState = true
-                                        }
-                                    },
-                                    icon = {
-                                        item.icon
-                                    },
-                                    label = { Text(item.label) }
-                                )
-                            }
-                        }
-                    },
-                    snackbarHost = { SnackbarHost(snackbarHostState) }
-                ) { innerPadding ->
-
-                    NavHost(
-                        navController = navController,
-                        startDestination = BottomNavItem.Form.route,
-                        modifier = Modifier.padding(innerPadding)
-                    ) {
-                        composable(BottomNavItem.Form.route) {
-                            TransactionForm(
-                                viewModel = viewModel,
-                                snackbarHostState = snackbarHostState
-                            )
-                        }
-                        composable(BottomNavItem.List.route) {
-                            TransactionList(
-                                viewModel = viewModel,
-                            )
-                        }
-                    }
-                }
+                FinanceApp(viewModel)
             }
         }
     }

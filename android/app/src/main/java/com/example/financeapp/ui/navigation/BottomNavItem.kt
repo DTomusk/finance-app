@@ -12,7 +12,7 @@ sealed class BottomNavItem (
 ) {
     object Form : BottomNavItem(
         route = "transaction_form",
-        label = "Log",
+        label = "Add transaction",
         icon = Icons.Default.Add
     )
 
