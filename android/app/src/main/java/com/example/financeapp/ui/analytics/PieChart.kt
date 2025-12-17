@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 data class PieChartData(
     val category: String,
     val amount: Float,
-    val color: Long
+    val color: Color
 )
 
 @Composable
@@ -44,7 +44,7 @@ fun PieChart(
                 val sweepAngle = sliceAngle - gapAngle
                 if (sweepAngle > 0f) {
                     drawArc(
-                        color = Color(slice.color),
+                        color = slice.color,
                         startAngle = startAngle + gapAngle / 2f,
                         sweepAngle = sweepAngle,
                         useCenter = false,
@@ -64,14 +64,14 @@ fun PieChart(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun PieChartPreview() {
     val sampleData = listOf(
-        PieChartData("Food", 150f, 0xFFE57373),
-        PieChartData("Transport", 80f, 0xFF64B5F6),
-        PieChartData("Entertainment", 120f, 0xFFFFB74D),
-        PieChartData("Utilities", 100f, 0xFF81C784)
+        PieChartData("Food", 15f, Color(0xFFE57373)),
+        PieChartData("Transport", 5f, Color(0xFF64B5F6)),
+        PieChartData("Entertainment", 10f, Color(0xFFFFB74D)),
+        PieChartData("Utilities", 20f, Color(0xFF81C784))
     )
     PieChart(data = sampleData)
 }

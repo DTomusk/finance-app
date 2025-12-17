@@ -8,4 +8,6 @@ interface ITransactionRepository {
     fun listTransactions(): Flow<List<TransactionEntity>>
 
     fun getCurrentMonthTotal(): Flow<Double>
+
+    fun getTotalByType(): Flow<Map<String, Double>>
 }

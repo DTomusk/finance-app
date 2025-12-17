@@ -27,7 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.financeapp.data.local.entity.TransactionEntity
-import com.example.financeapp.data.model.TransactionType
 import com.example.financeapp.utils.toReadableDate
 
 @Composable
@@ -65,7 +64,7 @@ fun TransactionItem(
                     )
 
                     Text(
-                        text = transaction.type.name,
+                        text = transaction.type,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.weight(1.3f)
@@ -103,5 +102,5 @@ fun TransactionItem(
 @Preview
 @Composable
 fun PreviewTransactionItem() {
-    TransactionItem(TransactionEntity(amount = 1.23, type = TransactionType.TRANSPORT, description="Blah"))
+    TransactionItem(TransactionEntity(amount = 1.23, type = "TRANSPORT", description="Blah"))
 }

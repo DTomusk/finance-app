@@ -17,6 +17,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,8 +26,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.financeapp.data.model.TransactionType
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
+import com.example.financeapp.data.local.entity.CategoryEntity
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,9 +38,16 @@ fun TransactionForm(
     snackbarHostState: SnackbarHostState) {
     val scope = rememberCoroutineScope()
     var amount by remember { mutableStateOf("") }
-    var selectedType by remember { mutableStateOf(TransactionType.TREATS) }
     var expanded by remember { mutableStateOf(false) }
     var description by remember { mutableStateOf("") }
+    val categories by viewModel.categories.collectAsStateWithLifecycle(emptyList())
+    var selectedCategory by remember { mutableStateOf<CategoryEntity?>(null) }
+
+    LaunchedEffect(categories) {
+        if (selectedCategory == null && categories.isNotEmpty()) {
+            selectedCategory = categories.first()
+        }
+    }
 
     Column(
         modifier = modifier.padding(16.dp)
@@ -72,7 +81,7 @@ fun TransactionForm(
             onExpandedChange = { expanded = !expanded }
         ) {
             OutlinedTextField(
-                value = selectedType.name,
+                value = selectedCategory?.name ?: "",
                 onValueChange = {},
                 label = { Text("Transaction type") },
                 readOnly = true,
@@ -88,15 +97,14 @@ fun TransactionForm(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                TransactionType.entries.forEach { type ->
+                categories.forEach { category ->
                     DropdownMenuItem(
-                        text = { Text(type.name) },
+                        text = { Text(category.name) },
                         onClick = {
-                            selectedType = type
+                            selectedCategory = category   // or name, depending on model
                             expanded = false
                         }
                     )
-
                 }
             }
         }
@@ -119,12 +127,12 @@ fun TransactionForm(
             onClick = {
                 val amountDouble = amount.toDoubleOrNull()
                 if (amountDouble != null) {
-                    viewModel.addTransaction(amountDouble, selectedType, description)
+                    viewModel.addTransaction(amountDouble, selectedCategory!!.key, description)
                     amount = ""
                     description = ""
                     scope.launch {
                         snackbarHostState.showSnackbar(
-                            "Submitted £$amountDouble (${selectedType.name})",
+                            "Submitted £$amountDouble (${selectedCategory!!.name})",
                             withDismissAction = true
                         )
                     }

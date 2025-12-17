@@ -23,7 +23,7 @@ fun TransactionList(
     modifier: Modifier = Modifier,
     viewModel: TransactionViewModel
 ) {
-    val monthSpent by viewModel.monthTotal.collectAsStateWithLifecycle(0.0)
+    //val monthSpent by viewModel.monthTotal.collectAsStateWithLifecycle(0.0)
     val transactions by viewModel.transactions.collectAsStateWithLifecycle(emptyList())
 
     LazyColumn(
@@ -36,11 +36,12 @@ fun TransactionList(
             Text("Total spend this month", style = MaterialTheme.typography.titleSmall)
             Spacer(Modifier.height(8.dp))
 
-            Text(
-                text = monthSpent?.let { "£${String.format("%.2f", monthSpent)}" } ?: "Loading...",
-                style = MaterialTheme.typography.titleLarge,
-                fontSize = MaterialTheme.typography.titleLarge.fontSize * 1.5f
-            )
+//            Text(
+//                text = "£${String.format("%.2f", monthSpent)}",
+//                style = MaterialTheme.typography.titleLarge,
+//                fontSize = MaterialTheme.typography.titleLarge.fontSize * 1.5f
+//            )
+
             Spacer(Modifier.height(12.dp))
 
             Text("Transaction log", style = MaterialTheme.typography.titleMedium)

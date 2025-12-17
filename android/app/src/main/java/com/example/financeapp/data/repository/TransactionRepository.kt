@@ -18,4 +18,5 @@ class TransactionRepository(
         return dao.getTotalForMonth(start, end)
             .map { it ?: 0.0 }
     }
+    override fun getTotalByType() = dao.getTotalByType()
 }

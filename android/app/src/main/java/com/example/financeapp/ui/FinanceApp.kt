@@ -19,6 +19,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.financeapp.ui.analytics.AnalyticsScreen
+import com.example.financeapp.ui.analytics.AnalyticsViewModel
+import com.example.financeapp.ui.analytics.preview.FakeAnalyticsViewModel
 import com.example.financeapp.ui.navigation.BottomNavItem
 import com.example.financeapp.ui.navigation.bottomNavItems
 import com.example.financeapp.ui.transaction.TransactionForm
@@ -28,7 +31,10 @@ import com.example.financeapp.ui.transaction.preview.FakeTransactionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FinanceApp(viewModel: TransactionViewModel) {
+fun FinanceApp(
+    transactionViewModel: TransactionViewModel,
+    analyticsViewModel: AnalyticsViewModel
+) {
 
     val snackbarHostState = remember { SnackbarHostState() }
     val navController = rememberNavController()
@@ -76,7 +82,7 @@ fun FinanceApp(viewModel: TransactionViewModel) {
                 exitTransition = { ExitTransition.None }
             ) {
                 TransactionForm(
-                    viewModel = viewModel,
+                    viewModel = transactionViewModel,
                     snackbarHostState = snackbarHostState
                 )
             }
@@ -84,7 +90,14 @@ fun FinanceApp(viewModel: TransactionViewModel) {
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
             ) {
-                TransactionList(viewModel = viewModel)
+                TransactionList(viewModel = transactionViewModel)
+            }
+
+            composable(BottomNavItem.Analytics.route,
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None }
+            ) {
+                AnalyticsScreen(viewModel = analyticsViewModel)
             }
         }
     }
@@ -94,5 +107,8 @@ fun FinanceApp(viewModel: TransactionViewModel) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewFinanceApp() {
-    FinanceApp(viewModel = FakeTransactionViewModel())
+    FinanceApp(
+        transactionViewModel = FakeTransactionViewModel(),
+        analyticsViewModel = FakeAnalyticsViewModel()
+    )
 }

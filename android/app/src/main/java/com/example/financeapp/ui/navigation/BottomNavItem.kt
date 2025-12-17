@@ -3,6 +3,7 @@ package com.example.financeapp.ui.navigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.PieChart
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomNavItem (
@@ -21,9 +22,16 @@ sealed class BottomNavItem (
         label = "History",
         icon = Icons.AutoMirrored.Filled.List
     )
+
+    object Analytics : BottomNavItem(
+        route = "analytics",
+        label = "Analytics",
+        icon = Icons.Default.PieChart
+    )
 }
 
 val bottomNavItems = listOf(
     BottomNavItem.Form,
-    BottomNavItem.List
+    BottomNavItem.List,
+    BottomNavItem.Analytics
 )
